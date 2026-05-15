@@ -32,12 +32,24 @@ direction = 1
 
 while True:
     # TODO 1: 熄滅所有 LED
+    # TODO 1: 熄滅所有 LED
+    all_off()
 
     # TODO 2: 點亮索引 pos 的 LED
+    leds[pos].on()
 
     time.sleep(0.15)
 
     # TODO 3: 將 pos 移動一步（依 direction）
+    pos += direction
 
     # TODO 4: 若 pos 超出範圍（小於 0 或大於等於 len(leds)）
     #         反轉 direction，並把 pos 修正回合法範圍內
+    if pos >= len(leds):
+        # ran past the right end: step back and reverse
+        pos = len(leds) - 2
+        direction = -1
+    elif pos < 0:
+        # ran past the left end: step forward and reverse
+        pos = 1
+        direction = 1
