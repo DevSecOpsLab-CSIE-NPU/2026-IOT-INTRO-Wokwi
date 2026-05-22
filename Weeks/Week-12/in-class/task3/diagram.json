@@ -39,8 +39,8 @@
     [ "esp:5", "r1:1", "green", [ "h0" ] ],
     [ "r1:2", "led1:A", "green", [ "v0" ] ],
     [ "led1:C", "esp:GND.3", "green", [ "v0" ] ],
-    [ "esp:GND.2", "led2:C", "black", [ "h124.4" ] ],
-    [ "esp:2", "r2:1", "green", [ "h0" ] ],
+    [ "esp:GND.1", "led2:C", "black", [ "h124.4" ] ],
+    [ "esp:4", "r2:1", "green", [ "h0" ] ],
     [ "r2:2", "led2:A", "green", [ "h18", "v-134.4" ] ]
   ],
   "dependencies": {}
