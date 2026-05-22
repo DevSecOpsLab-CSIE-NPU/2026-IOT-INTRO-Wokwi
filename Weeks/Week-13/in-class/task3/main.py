@@ -2,7 +2,7 @@ from machine import Pin, I2C
 import sh1107
 
 # ESP32 I2C pin assignment for Grove SH1107 OLED (match diagram.json wiring)
-i2c = I2C(0, scl=Pin(21), sda=Pin(22))
+i2c = I2C(0, scl=Pin(22), sda=Pin(21))
 
 oled_width = 128
 oled_height = 128

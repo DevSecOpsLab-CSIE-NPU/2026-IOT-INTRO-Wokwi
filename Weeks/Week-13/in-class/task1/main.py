@@ -10,8 +10,5 @@ oled = ssd1306.SSD1306_I2C(oled_width, oled_height, i2c)
 
 # Dragon Ball inspired style tags shown on OLED
 oled.fill(0)
-oled.text("DRAGON BALL", 8, 8)
-oled.text("spiky hair", 16, 24)
-oled.text("speed lines", 12, 36)
-oled.text("energy aura", 10, 48)
+oled.text("Hello, August!", 16, 28)
 oled.show()
