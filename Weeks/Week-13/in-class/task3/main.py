@@ -1,15 +1,85 @@
 from machine import Pin, I2C
-import sh1107
+import framebuf
+
+try:
+    import sh1107  # type: ignore
+except ImportError:
+    sh1107 = None
+
+
+class SH1107_I2C_FALLBACK(framebuf.FrameBuffer):
+    def __init__(self, width, height, i2c, address=0x3C, rotate=0):
+        self.width = width
+        self.height = height
+        self.i2c = i2c
+        self.addr = address
+        self.rotate = rotate
+        self.pages = self.height // 8
+        self.buf = bytearray(self.pages * self.width)
+        super().__init__(self.buf, self.width, self.height, framebuf.MONO_VLSB)
+        self._init_display()
+
+    def _write_cmd(self, cmd):
+        self.i2c.writeto(self.addr, bytearray((0x80, cmd)))
+
+    def _write_data(self):
+        self.i2c.writeto(self.addr, b"\x40" + self.buf)
+
+    def _init_display(self):
+        for cmd in (
+            0xAE,
+            0x20,
+            0x02,
+            0x40,
+            0xA1,
+            0xC8,
+            0x81,
+            0x7F,
+            0xA6,
+            0xA8,
+            0x7F,
+            0xD3,
+            0x00,
+            0xD5,
+            0x80,
+            0xD9,
+            0xF1,
+            0xDA,
+            0x12,
+            0xDB,
+            0x30,
+            0x8D,
+            0x14,
+            0xAF,
+        ):
+            self._write_cmd(cmd)
+        self.fill(0)
+        self.show()
+
+    def show(self):
+        for page in range(self.pages):
+            self._write_cmd(0xB0 | page)
+            self._write_cmd(0x00)
+            self._write_cmd(0x10)
+            start = page * self.width
+            end = start + self.width
+            self.i2c.writeto(self.addr, b"\x40" + self.buf[start:end])
 
 # ESP32 I2C pin assignment for Grove SH1107 OLED (match diagram.json wiring)
 i2c = I2C(0, scl=Pin(21), sda=Pin(22))
 
 oled_width = 128
 oled_height = 128
-oled = sh1107.SH1107_I2C(oled_width, oled_height, i2c, address=0x3C, rotate=0)
-
-center_x = 64
-center_y = 90
+if sh1107 is not None:
+    oled = sh1107.SH1107_I2C(oled_width, oled_height, i2c, address=0x3C, rotate=0)
+    center_x = 64
+    center_y = 90
+else:
+    oled = SH1107_I2C_FALLBACK(oled_width, oled_height, i2c, address=0x3C, rotate=0)
+    # Fallback driver in this desktop flow has a different XY mapping.
+    # Use empirical center so dragon ball aligns with the visible center area.
+    center_x = 96
+    center_y = 64
 
 
 def draw_circle(display, cx, cy, r, color=1):
@@ -65,7 +135,9 @@ def draw_grid(display, cx, cy, width, height, step=16, color=1):
 
 oled.fill(0)
 draw_grid(oled, center_x, center_y, oled_width, oled_height)
-draw_circle(oled, center_x, center_y, 35, 1)
-draw_circle(oled, center_x, center_y, 32, 1)
+outer_r = min(35, center_x, oled_width - 1 - center_x, center_y, oled_height - 1 - center_y)
+inner_r = max(outer_r - 3, 1)
+draw_circle(oled, center_x, center_y, outer_r, 1)
+draw_circle(oled, center_x, center_y, inner_r, 1)
 draw_star(oled, center_x, center_y, 13, 1)
 oled.show()
