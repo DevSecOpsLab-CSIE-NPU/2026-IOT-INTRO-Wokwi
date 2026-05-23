@@ -249,6 +249,9 @@ def draw_dancing_chinese(display, frame):
 	active = frame % len(chars)
 	cy = base_y
 
+	# safety default for size in case of unexpected errors
+	size = 16
+
 	for i, ch in enumerate(chars):
 		enlarged = i == active
 		# 放大時使用原始 32px (shrink=1)，未放大時使用 shrink=3（較小）
