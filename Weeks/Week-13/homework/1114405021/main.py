@@ -251,15 +251,20 @@ def draw_dancing_chinese(display, frame):
 
 	for i, ch in enumerate(chars):
 		enlarged = i == active
-		shrink = 2 if enlarged else 3
+		# 放大時使用原始 32px (shrink=1)，未放大時使用 shrink=3（較小）
+		shrink = 1 if enlarged else 3
 		# 顯示尺寸由原始 32px / shrink 決定
-		size = (32 + shrink - 1) // shrink
-		# 放大時預設往左移一點，但若會碰到龍珠則往右推到安全位置
+		char_w = (32 + shrink - 1) // shrink
+		# 放大時預設往左移一點以靠近中間，非放大時維持 base_x
 		if enlarged:
 			x = base_x - 8
 			min_x = int(dragon_right + margin)
 			if x < min_x:
 				x = min_x
+			# 也確保不超出右邊界
+			max_x = oled_width - char_w
+			if x > max_x:
+				x = max_x
 		else:
 			x = base_x
 		y = cy + wave[(frame + i) % len(wave)]
