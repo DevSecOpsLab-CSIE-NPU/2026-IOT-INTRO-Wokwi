@@ -247,63 +247,73 @@ def draw_dancing_chinese(display, frame):
 	spacing = 6
 	wave = (-5, 0, 5, 0)
 	active = frame % len(chars)
-	cy = base_y
+	# choose shrinks per-char (active=1, others=2)
+	shrinks = [2, 2, 2]
+	shrinks[active] = 1
+	# compute widths/heights
+	char_ws = [ (32 + s - 1)//s for s in shrinks ]
+	char_hs = char_ws
 
-	# track previous character right edge to prevent overlap
+	# compute vertical positions so that active char gets center, others above/below
+	ys = [0,0,0]
+	if active == 0:
+		ys[0] = base_y
+		ys[1] = ys[0] + char_hs[0] + spacing
+		ys[2] = ys[1] + char_hs[1] + spacing
+	elif active == 1:
+		ys[1] = base_y
+		ys[0] = ys[1] - (char_hs[0] + spacing)
+		ys[2] = ys[1] + char_hs[1] + spacing
+	else:
+		ys[2] = base_y
+		ys[1] = ys[2] - (char_hs[1] + spacing)
+		ys[0] = ys[1] - (char_hs[0] + spacing)
+
+	# layout horizontally with extra margin when enlarged
 	prev_right = -1000
-	# current x cursor for laying out non-enlarged chars
 	cur_x = base_x
-	# extra margin to separate an enlarged char from its neighbors
 	extra_margin = 8
 	prev_enlarged = False
 
 	for i, ch in enumerate(chars):
-		enlarged = i == active
-		# 放大時使用原始 32px (shrink=1)，未放大時使用 shrink=2（較大且更清晰）
-		shrink = 1 if enlarged else 2
-		# 顯示尺寸由原始 32px / shrink 決定
-		char_w = (32 + shrink - 1) // shrink
+		enlarged = (i == active)
+		shrink = shrinks[i]
+		char_w = char_ws[i]
 
-		# decide x: enlarged chars shift left to emphasize; otherwise use current cursor
+		# decide x
 		if enlarged:
 			x = base_x - 12
 		else:
 			x = cur_x
 
-		# ensure we don't overlap the dragon on the left
+		# avoid dragon
 		min_x = int(dragon_right + margin)
 		if x < min_x:
 			x = min_x
 
-		# ensure not overlapping previous character on the left
+		# avoid overlap with previous char, add extra gap if either is enlarged
 		if x <= prev_right + spacing:
-			# add extra margin if either this or previous char is enlarged
 			gap = extra_margin if (prev_enlarged or enlarged) else 0
 			x = prev_right + spacing + gap
 
-		# clamp to right boundary
+		# clamp right
 		max_x = oled_width - char_w
 		if x > max_x:
 			x = max_x
 
-		y = cy + wave[(frame + i) % len(wave)]
-		if enlarged:
-			y -= 8
+		y = ys[i] + wave[(frame + i) % len(wave)]
 
-		# clamp vertically so the character is fully visible
-		char_h = (32 + shrink - 1) // shrink
+		# clamp vertical to keep glyph intact
+		char_h = char_hs[i]
 		if y < 0:
 			y = 0
 		max_y = oled_height - char_h
 		if y > max_y:
 			y = max_y
 
-		# draw without y-wrap to prevent split glyphs
 		draw_char(display, ch, x, y, shrink=shrink, wrap_y=False)
 
-		# update layout cursor and previous right edge
 		prev_right = x + char_w
-		# if this char is enlarged, reserve extra margin before next char
 		cur_x = prev_right + spacing + (extra_margin if enlarged else 0)
 		prev_enlarged = enlarged
 
