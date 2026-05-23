@@ -238,8 +238,9 @@ def draw_static_scene(display, temp_text=None):
 def draw_dancing_chinese(display, frame):
 	chars = "花火節"
 	base_y = 78
-	# 把 base_x 往左移以避免放大時超出右邊界（128 - 32 = 96）
-	base_x = 96
+	# 將中文群組往右移一些，並調整放大/非放大的縮放等級
+	# 放大時改為 shrink=2 (16px)，未放大時改為 shrink=3 (~11px)
+	base_x = 100
 	spacing = 4
 	wave = (-5, 0, 5, 0)
 	active = frame % len(chars)
@@ -247,8 +248,9 @@ def draw_dancing_chinese(display, frame):
 
 	for i, ch in enumerate(chars):
 		enlarged = i == active
-		shrink = 1 if enlarged else 2
-		size = 32 if enlarged else 16
+		shrink = 2 if enlarged else 3
+		# 顯示尺寸由原始 32px / shrink 決定
+		size = (32 + shrink - 1) // shrink
 		x = base_x - 8 if enlarged else base_x
 		y = cy + wave[(frame + i) % len(wave)]
 
