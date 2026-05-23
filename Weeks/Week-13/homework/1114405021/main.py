@@ -273,9 +273,11 @@ def draw_dancing_chinese(display, frame):
 		y_mins = [flower_active_y, fire_visible_y, jie_visible_y]
 		y_maxs = [flower_active_y + 2, fire_visible_y, jie_visible_y]
 	elif active == 1:
-		ys = [flower_small_y, fire_active_y, jie_small_y]
-		y_mins = [flower_small_y, fire_active_y, jie_small_y]
-		y_maxs = [flower_small_y, fire_active_y + 2, jie_small_y]
+		flower_visible_y = max(0, fire_active_y - char_hs[0] - 10)
+		jie_visible_y = min(oled_height - char_hs[2], fire_active_y + char_hs[1] + 8)
+		ys = [flower_visible_y, fire_active_y, jie_visible_y]
+		y_mins = [flower_visible_y, fire_active_y, jie_visible_y]
+		y_maxs = [flower_visible_y, fire_active_y + 2, jie_visible_y]
 	else:
 		ys = [flower_small_y, fire_small_y, jie_active_y]
 		y_mins = [flower_small_y, fire_small_y, jie_active_y]
