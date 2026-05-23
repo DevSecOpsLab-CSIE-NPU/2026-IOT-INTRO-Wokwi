@@ -236,7 +236,8 @@ def draw_static_scene(display, temp_text=None):
 def draw_dancing_chinese(display, frame):
 	chars = "花火節"
 	base_y = 78
-	base_x = 104
+	# 把 base_x 往左移以避免放大時超出右邊界（128 - 32 = 96）
+	base_x = 96
 	spacing = 4
 	wave = (-5, 0, 5, 0)
 	active = frame % len(chars)
