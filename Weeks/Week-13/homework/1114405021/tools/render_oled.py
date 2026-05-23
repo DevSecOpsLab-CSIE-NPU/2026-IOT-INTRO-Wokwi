@@ -6,6 +6,27 @@ H = 128
 
 # tiny 3x5 font (subset) for small labels
 FONT_3X5 = {
+    "A": ("111", "101", "111", "101", "101"),
+    "C": ("111", "100", "100", "100", "111"),
+    "D": ("110", "101", "101", "101", "110"),
+    "E": ("111", "100", "110", "100", "111"),
+    "F": ("111", "100", "110", "100", "100"),
+    "G": ("111", "100", "101", "101", "111"),
+    "H": ("101", "101", "111", "101", "101"),
+    "I": ("111", "010", "010", "010", "111"),
+    "L": ("100", "100", "100", "100", "111"),
+    "N": ("101", "111", "111", "111", "101"),
+    "O": ("111", "101", "101", "101", "111"),
+    "P": ("111", "101", "111", "100", "100"),
+    "R": ("111", "101", "111", "110", "101"),
+    "S": ("111", "100", "111", "001", "111"),
+    "T": ("111", "010", "010", "010", "010"),
+    "U": ("101", "101", "101", "101", "111"),
+    "V": ("101", "101", "101", "101", "010"),
+    "Y": ("101", "101", "010", "010", "010"),
+    "0": ("111", "101", "101", "101", "111"),
+    "2": ("111", "001", "111", "100", "111"),
+    "6": ("111", "100", "111", "101", "111"),
     "1": ("010","010","010","010","010"),
     "3": ("111","001","111","001","111"),
     "4": ("101","101","111","001","001"),
@@ -15,6 +36,7 @@ FONT_3X5 = {
     "9": ("111","101","111","001","001"),
     ".": ("000","000","000","000","010"),
     " ": ("000","000","000","000","000"),
+    "?": ("111","001","011","000","010"),
 }
 
 # Chinese glyphs copied from main.py (MONO_HLSB layout)
@@ -204,9 +226,27 @@ def render_frames(num_frames=20, fps=4):
         src = Image.new('1', (W, H), 0)
         draw_static_scene(src, temp_text="24.0 C")
         draw_dancing_chinese(src, f)
-        # rotate 23 degrees CCW about center
-        rotated = src.rotate(23, resample=Image.NEAREST, expand=False, center=(W//2, H//2))
-        frames.append(rotated)
+        # perform same blit_rotate as main.py (23 degrees CCW)
+        dst = Image.new('1', (W, H), 0)
+        angle = math.radians(23)
+        cos_a = math.cos(angle)
+        sin_a = math.sin(angle)
+        cx = (W - 1) / 2.0
+        cy = (H - 1) / 2.0
+        src_pixels = src.load()
+        dst_pixels = dst.load()
+        for x in range(W):
+            for y in range(H):
+                if src_pixels[x, y]:
+                    dx = x - cx
+                    dy = y - cy
+                    xr = cx + dx * cos_a - dy * sin_a
+                    yr = cy + dx * sin_a + dy * cos_a
+                    xi = int(round(xr))
+                    yi = int(round(yr))
+                    if 0 <= xi < W and 0 <= yi < H:
+                        dst_pixels[xi, yi] = 1
+        frames.append(dst)
     return frames
 
 if __name__ == '__main__':
