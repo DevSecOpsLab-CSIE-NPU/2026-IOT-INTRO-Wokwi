@@ -314,9 +314,9 @@ def draw_dancing_chinese(display, frame):
 
 		# clamp vertical to keep glyph intact
 		char_h = char_hs[i]
-		# ensure enlarged chars do not go above the star top inside the dragon
-		if enlarged:
-			star_top = center_y - 10
+		# ensure enlarged chars (and small '花') do not go above the star top inside the dragon
+		star_top = center_y - 10
+		if enlarged or (ch == '花' and shrink > 1):
 			if y < star_top:
 				y = star_top
 		if y < 0:
