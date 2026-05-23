@@ -265,9 +265,12 @@ def draw_dancing_chinese(display, frame):
 	jie_active_y = max(0, fire_small_y - 2)
 
 	if active == 0:
-		ys = [flower_active_y, fire_small_y, jie_small_y]
-		y_mins = [flower_active_y, fire_small_y, jie_small_y]
-		y_maxs = [flower_active_y + 2, fire_small_y, jie_small_y]
+		# when '花' is enlarged, keep '火' clearly visible below it
+		fire_visible_y = min(oled_height - char_hs[1], flower_small_y + char_hs[0] + 10)
+		jie_visible_y = min(oled_height - char_hs[2], fire_visible_y + char_hs[1] + 8)
+		ys = [flower_active_y, fire_visible_y, jie_visible_y]
+		y_mins = [flower_active_y, fire_visible_y, jie_visible_y]
+		y_maxs = [flower_active_y + 2, fire_visible_y, jie_visible_y]
 	elif active == 1:
 		ys = [flower_small_y, fire_active_y, jie_small_y]
 		y_mins = [flower_small_y, fire_active_y, jie_small_y]
