@@ -1,0 +1,16 @@
+--- output ---
+SH1107: framebuf is  standard
+[DEBUG] temperature = 24.0C, humidity = 40.0%
+[DEBUG] src_fb bits= 1668
+[DEBUG] temperature = 24.0C, humidity = 40.0%
+[DEBUG] src_fb bits= 1609
+[DEBUG] temperature = 24.0C, humidity = 40.0%
+[DEBUG] src_fb bits= 1643
+[DEBUG] temperature = 24.0C, humidity = 40.0%
+[DEBUG] src_fb bits= 1663
+[DEBUG] temperature = 24.0C, humidity = 40.0%
+[DEBUG] src_fb bits= 1601
+[DEBUG] temperature = 24.0C, humidity = 40.0%
+[DEBUG] src_fb bits= 1661
+[DEBUG] temperature = 24.0C, humidity = 40.0%
+[DEBUG] src_fb bits= 1659
