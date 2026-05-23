@@ -1,5 +1,8 @@
 from PIL import Image, ImageDraw, ImageFont
 import math
+import re
+import sys
+from pathlib import Path
 
 W = 128
 H = 128
@@ -224,7 +227,8 @@ def render_frames(num_frames=20, fps=4):
     frames = []
     for f in range(num_frames):
         src = Image.new('1', (W, H), 0)
-        draw_static_scene(src)
+        # temp_text may be set by caller; we keep a global variable TEMP_TEXT
+        draw_static_scene(src, temp_text=globals().get('TEMP_TEXT'))
         draw_dancing_chinese(src, f)
         # perform same blit_rotate as main.py (23 degrees CCW)
         dst = Image.new('1', (W, H), 0)
@@ -250,6 +254,27 @@ def render_frames(num_frames=20, fps=4):
     return frames
 
 if __name__ == '__main__':
+    # determine temperature text: CLI arg overrides file parsing
+    TEMP_TEXT = None
+    if len(sys.argv) > 1:
+        # accept a single numeric temperature like 24.0 or a string
+        try:
+            t = float(sys.argv[1])
+            TEMP_TEXT = '{:.1f} C'.format(t)
+        except Exception:
+            TEMP_TEXT = sys.argv[1]
+    else:
+        # try parse last temperature from esp32_dht/serial_capture.txt
+        try:
+            sc_path = Path(__file__).parent.parent / 'esp32_dht' / 'serial_capture.txt'
+            if sc_path.exists():
+                txt = sc_path.read_text(encoding='utf-8', errors='ignore')
+                matches = re.findall(r"temperature\s*=\s*([0-9]+\.?[0-9]*)C", txt)
+                if matches:
+                    TEMP_TEXT = '{:.1f} C'.format(float(matches[-1]))
+        except Exception:
+            TEMP_TEXT = None
+
     frames = render_frames(num_frames=20, fps=4)
     # save first frame as PNG
     frames[0].save('../oled_screenshot.png')
