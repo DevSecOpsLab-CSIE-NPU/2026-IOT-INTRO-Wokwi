@@ -314,6 +314,11 @@ def draw_dancing_chinese(display, frame):
 
 		# clamp vertical to keep glyph intact
 		char_h = char_hs[i]
+		# ensure enlarged chars do not go above the star top inside the dragon
+		if enlarged:
+			star_top = center_y - 10
+			if y < star_top:
+				y = star_top
 		if y < 0:
 			y = 0
 		max_y = oled_height - char_h
