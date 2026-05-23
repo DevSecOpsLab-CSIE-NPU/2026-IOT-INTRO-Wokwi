@@ -1,3 +1,4 @@
+# RECOVERED: keep this marker so file appears in git changes
 from machine import Pin, I2C
 import time
 import math
@@ -255,6 +256,24 @@ def draw_dancing_chinese(display, frame):
 		cy += size + spacing
 
 
+def draw_temperature(display, temp_text):
+	"""
+	在畫面左下角顯示溫度（格式 xx.x C），使用 tiny font。
+	display: framebuffer 或 oled
+	temp_text: 已格式化字串，例如 '24.0 C' 或 '--.- C'
+	"""
+	try:
+		# tiny font 高度約 5 行，保留 2px 底部邊距
+		y = oled_height - 8
+		draw_tiny_text(display, temp_text, 2, y)
+	except Exception:
+		# fallback to built-in text if tiny font fails
+		try:
+			display.text(temp_text, 2, oled_height - 10)
+		except Exception:
+			pass
+
+
 def blit_rotate(src, dst, angle_deg):
 	# rotate src (FrameBuffer) by angle_deg degrees counter-clockwise onto dst
 	w = oled_width
@@ -311,8 +330,11 @@ def main():
 			# draw into off-screen buffer, then rotate-blit to physical oled
 			try:
 				src_fb.fill(0)
-				draw_static_scene(src_fb, temp_text=temp_text)
+				# draw static scene and animated chinese
+				draw_static_scene(src_fb)
 				draw_dancing_chinese(src_fb, frame)
+				# draw temperature at left-bottom (updated every ~2s)
+				draw_temperature(src_fb, temp_text)
 				# print debug count of src buffer bits
 				try:
 					bits = count_bits_in_buf(src_buf)
