@@ -253,6 +253,9 @@ def draw_dancing_chinese(display, frame):
 	prev_right = -1000
 	# current x cursor for laying out non-enlarged chars
 	cur_x = base_x
+	# extra margin to separate an enlarged char from its neighbors
+	extra_margin = 8
+	prev_enlarged = False
 
 	for i, ch in enumerate(chars):
 		enlarged = i == active
@@ -274,7 +277,9 @@ def draw_dancing_chinese(display, frame):
 
 		# ensure not overlapping previous character on the left
 		if x <= prev_right + spacing:
-			x = prev_right + spacing
+			# add extra margin if either this or previous char is enlarged
+			gap = extra_margin if (prev_enlarged or enlarged) else 0
+			x = prev_right + spacing + gap
 
 		# clamp to right boundary
 		max_x = oled_width - char_w
@@ -298,7 +303,9 @@ def draw_dancing_chinese(display, frame):
 
 		# update layout cursor and previous right edge
 		prev_right = x + char_w
-		cur_x = prev_right + spacing
+		# if this char is enlarged, reserve extra margin before next char
+		cur_x = prev_right + spacing + (extra_margin if enlarged else 0)
+		prev_enlarged = enlarged
 
 
 def draw_temperature(display, temp_text):
