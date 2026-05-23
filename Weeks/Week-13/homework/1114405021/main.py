@@ -255,6 +255,7 @@ def draw_dancing_chinese(display, frame):
 		shrink = 1 if enlarged else 3
 		# 顯示尺寸由原始 32px / shrink 決定
 		char_w = (32 + shrink - 1) // shrink
+		size = char_w
 		# 放大時預設往左移一點以靠近中間，非放大時維持 base_x
 		if enlarged:
 			x = base_x - 8
