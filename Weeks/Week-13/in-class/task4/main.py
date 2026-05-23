@@ -86,7 +86,8 @@ while True:
         title_x = max(0, dragon_center_x - (len(title) * 8) // 2)
         temp_x = max(0, dragon_center_x - (len(temp_text) * 8) // 2)
         oled.text(title, title_x, 16)
-        oled.text(temp_text, temp_x, 30)
+        # move temperature display to left-bottom corner
+        oled.text(temp_text, 2, oled_height - 12)
         draw_circle(oled, dragon_center_x, dragon_center_y, 20, 1)
         draw_star(oled, dragon_center_x, dragon_center_y, 8, 1)
         oled.show()
