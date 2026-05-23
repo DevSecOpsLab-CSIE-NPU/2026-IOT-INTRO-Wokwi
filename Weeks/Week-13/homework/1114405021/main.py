@@ -222,10 +222,9 @@ def ty(y):
 
 def draw_static_scene(display, temp_text=None):
 	display.fill(0)
-	# 縮小主視覺圓以避免與右側中文字接觸
-	draw_circle(display, center_x, center_y, 28, 1)
-	draw_circle(display, center_x, center_y, 25, 1)
-	draw_star(display, center_x, center_y, 10, 1)
+	draw_circle(display, center_x, center_y, 35, 1)
+	draw_circle(display, center_x, center_y, 32, 1)
+	draw_star(display, center_x, center_y, 13, 1)
 	draw_tiny_text(display, "Penghu University", 2, ty(2))
 	draw_tiny_text(display, "of Science and Technology", 2, ty(10))
 	draw_tiny_text(display, "Dept of CSIE", 2, ty(18))
@@ -238,115 +237,28 @@ def draw_static_scene(display, temp_text=None):
 def draw_dancing_chinese(display, frame):
 	chars = "花火節"
 	base_y = 78
-	# 將中文群組往右移一些，並調整放大/非放大的縮放等級
-	# 放大時使用原始 32px (shrink=1)，非放大時使用 shrink=2（16px）以保持清晰
-	base_x = 96
-	# 計算龍珠右邊界 (使用 draw_static_scene 的外圈半徑)
-	dragon_right = center_x + 28
-	margin = 4
-	spacing = 10
+	base_x = 104
+	spacing = 4
 	wave = (-5, 0, 5, 0)
 	active = frame % len(chars)
-	# choose shrinks per-char (active=1, others=2)
-	shrinks = [2, 2, 2]
-	shrinks[active] = 1
-	# compute widths/heights
-	char_ws = [ (32 + s - 1)//s for s in shrinks ]
-	char_hs = char_ws
-
-	# compute vertical anchors and clamps per character so each active state
-	# follows its own spacing rule.
-	star_top = center_y - 10
-	flower_small_y = star_top
-	flower_active_y = max(0, star_top - 2)
-	fire_small_y = min(oled_height - char_hs[1], flower_small_y + char_hs[0] + 4)
-	fire_active_y = flower_small_y + 6
-	jie_small_y = min(oled_height - char_hs[2], fire_small_y + char_hs[1] + 6)
-	jie_active_y = max(0, fire_small_y - 2)
-
-	if active == 0:
-		# when '花' is enlarged, keep '火' clearly visible below it
-		flower_bottom = flower_active_y + char_hs[0]
-		fire_visible_y = oled_height - char_hs[1]
-		jie_visible_y = oled_height - char_hs[2]
-		ys = [flower_active_y, fire_visible_y, jie_visible_y]
-		y_mins = [flower_active_y, fire_visible_y, jie_visible_y]
-		y_maxs = [flower_active_y + 2, fire_visible_y, jie_visible_y]
-	elif active == 1:
-		flower_visible_y = max(0, fire_active_y - char_hs[0] - 10)
-		jie_visible_y = min(oled_height - char_hs[2], fire_active_y + char_hs[1] + 8)
-		ys = [flower_visible_y, fire_active_y, jie_visible_y]
-		y_mins = [flower_visible_y, fire_active_y, jie_visible_y]
-		y_maxs = [flower_visible_y, fire_active_y + 2, jie_visible_y]
+	if active == 1:
+		y_positions = [44, 86, 110]
+		x_positions = [56, 96, 104]
 	else:
-		ys = [flower_small_y, fire_small_y, jie_active_y]
-		y_mins = [flower_small_y, fire_small_y, jie_active_y]
-		y_maxs = [flower_small_y, fire_small_y, min(oled_height - char_hs[2], jie_active_y + 4)]
-
-	# shift the whole chinese group downward a bit
-	global_down_shift = 4
-	for i in range(3):
-		ys[i] += global_down_shift
-		y_mins[i] += global_down_shift
-		y_maxs[i] += global_down_shift
-
-	# layout horizontally with extra margin when enlarged
-	prev_right = -1000
-	cur_x = base_x
-	extra_margin = 12
-	prev_enlarged = False
-	if active == 0:
-		xs = [int(dragon_right + margin), oled_width - char_ws[1], int(dragon_right + margin)]
-	else:
-		xs = None
+		y_positions = [base_y, base_y + 36, base_y + 72]
+		x_positions = [base_x, base_x - 8, base_x]
 
 	for i, ch in enumerate(chars):
 		enlarged = (i == active)
-		shrink = shrinks[i]
-		char_w = char_ws[i]
+		shrink = 1 if enlarged else 2
+		size = 32 if enlarged else 16
+		x = x_positions[i] - 8 if enlarged else x_positions[i]
+		y = y_positions[i] + wave[(frame + i) % len(wave)]
 
-		# decide x
-		if xs is not None:
-			x = xs[i]
-		elif enlarged:
-			x = base_x - 12
-		else:
-			x = cur_x
+		if enlarged:
+			y -= 8
 
-		# avoid dragon
-		min_x = int(dragon_right + margin)
-		if x < min_x:
-			x = min_x
-
-		# avoid overlap with previous char, add extra gap if either is enlarged
-		if x <= prev_right + spacing:
-			gap = extra_margin if (prev_enlarged or enlarged) else 0
-			x = prev_right + spacing + gap
-
-		# clamp right
-		max_x = oled_width - char_w
-		if x > max_x:
-			x = max_x
-
-		y = ys[i] + wave[(frame + i) % len(wave)]
-
-		# clamp vertical to keep glyph intact and respect per-char rules
-		char_h = char_hs[i]
-		if y < y_mins[i]:
-			y = y_mins[i]
-		if y > y_maxs[i]:
-			y = y_maxs[i]
-		if y < 0:
-			y = 0
-		max_y = oled_height - char_h
-		if y > max_y:
-			y = max_y
-
-		draw_char(display, ch, x, y, shrink=shrink, wrap_y=False)
-
-		prev_right = x + char_w
-		cur_x = prev_right + spacing + (extra_margin if enlarged else 0)
-		prev_enlarged = enlarged
+		draw_char(display, ch, x, y, shrink=shrink, wrap_y=True)
 
 
 def draw_temperature(display, temp_text):
