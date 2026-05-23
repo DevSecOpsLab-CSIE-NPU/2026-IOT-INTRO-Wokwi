@@ -269,12 +269,14 @@ def draw_dancing_chinese(display, frame):
 		ys[1] = ys[2] - (char_hs[1] + spacing)
 		ys[0] = ys[1] - (char_hs[0] + spacing)
 
-	# if '節' is enlarged (active == 2), shift all chars down a bit to avoid
-	# overlapping text above; clamp later will ensure they stay on-screen
+	# if '節' is enlarged (active == 2), ensure the top char ('花') is below
+	# the upper static tiny text. compute required shift dynamically.
 	if active == 2:
-		shift_down = 6
-		for i in range(3):
-			ys[i] += shift_down
+		min_flower_y = ty(18) + 8
+		if ys[0] < min_flower_y:
+			shift_down = min_flower_y - ys[0]
+			for i in range(3):
+				ys[i] += shift_down
 
 	# layout horizontally with extra margin when enlarged
 	prev_right = -1000
