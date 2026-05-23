@@ -249,8 +249,10 @@ def draw_dancing_chinese(display, frame):
 	active = frame % len(chars)
 	cy = base_y
 
-	# safety default for size in case of unexpected errors
-	size = 16
+	# track previous character right edge to prevent overlap
+	prev_right = -1000
+	# current x cursor for laying out non-enlarged chars
+	cur_x = base_x
 
 	for i, ch in enumerate(chars):
 		enlarged = i == active
@@ -258,35 +260,45 @@ def draw_dancing_chinese(display, frame):
 		shrink = 1 if enlarged else 2
 		# 顯示尺寸由原始 32px / shrink 決定
 		char_w = (32 + shrink - 1) // shrink
-		size = char_w
-		# 放大時預設往左移一點以靠近中間，非放大時維持 base_x
+
+		# decide x: enlarged chars shift left to emphasize; otherwise use current cursor
 		if enlarged:
 			x = base_x - 12
-			min_x = int(dragon_right + margin)
-			if x < min_x:
-				x = min_x
-			# 也確保不超出右邊界
-			max_x = oled_width - char_w
-			if x > max_x:
-				x = max_x
 		else:
-			x = base_x
-		y = cy + wave[(frame + i) % len(wave)]
+			x = cur_x
 
-		# compute char height and adjust for enlarge offset
-		char_h = (32 + shrink - 1) // shrink
+		# ensure we don't overlap the dragon on the left
+		min_x = int(dragon_right + margin)
+		if x < min_x:
+			x = min_x
+
+		# ensure not overlapping previous character on the left
+		if x <= prev_right + spacing:
+			x = prev_right + spacing
+
+		# clamp to right boundary
+		max_x = oled_width - char_w
+		if x > max_x:
+			x = max_x
+
+		y = cy + wave[(frame + i) % len(wave)]
 		if enlarged:
 			y -= 8
-		# clamp vertically so the character is fully visible (avoid wrap-around)
+
+		# clamp vertically so the character is fully visible
+		char_h = (32 + shrink - 1) // shrink
 		if y < 0:
 			y = 0
 		max_y = oled_height - char_h
 		if y > max_y:
 			y = max_y
 
-		# draw without y-wrap to prevent split / half-visible glyphs
+		# draw without y-wrap to prevent split glyphs
 		draw_char(display, ch, x, y, shrink=shrink, wrap_y=False)
-		cy += size + spacing
+
+		# update layout cursor and previous right edge
+		prev_right = x + char_w
+		cur_x = prev_right + spacing
 
 
 def draw_temperature(display, temp_text):
