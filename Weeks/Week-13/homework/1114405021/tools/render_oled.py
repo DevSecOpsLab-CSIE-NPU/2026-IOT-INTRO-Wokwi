@@ -224,7 +224,7 @@ def render_frames(num_frames=20, fps=4):
     frames = []
     for f in range(num_frames):
         src = Image.new('1', (W, H), 0)
-        draw_static_scene(src, temp_text="24.0 C")
+        draw_static_scene(src)
         draw_dancing_chinese(src, f)
         # perform same blit_rotate as main.py (23 degrees CCW)
         dst = Image.new('1', (W, H), 0)
