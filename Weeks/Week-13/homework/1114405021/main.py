@@ -221,17 +221,7 @@ def draw_static_scene(display, temp_text=None):
 	display.text("2026", 96, ty(2))
 	# student id small label
 	draw_tiny_text(display, STUDENT_ID, 2, ty(26))
-	if temp_text:
-		# restore temperature to centered top (initial layout)
-		title = "Temperature"
-		title_x = max(0, center_x - (len(title) * 8) // 2)
-		temp_x = max(0, center_x - (len(temp_text) * 8) // 2)
-		display.text(title, title_x, 16)
-		try:
-			display.text(temp_text, temp_x, 30)
-		except Exception:
-			# fallback: tiny text centered-ish
-			draw_tiny_text(display, temp_text, max(2, temp_x), 30)
+	# temperature is intentionally not drawn on-screen per request
 
 
 def draw_dancing_chinese(display, frame):
