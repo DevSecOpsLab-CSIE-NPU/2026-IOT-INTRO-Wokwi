@@ -200,7 +200,8 @@ def draw_static_scene(img, temp_text=None):
     d.text((96,38), "2026", fill=1)
     draw_tiny_text_to_image(img, "1114405021", 2, 70)
     if temp_text:
-        d.text((40, 30), temp_text, fill=1)
+        # place temperature at left-bottom corner similar to device
+        draw_tiny_text_to_image(img, temp_text, 2, H - 8)
 
 
 def draw_dancing_chinese(img, frame):
