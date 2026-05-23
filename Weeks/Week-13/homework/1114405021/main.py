@@ -219,11 +219,13 @@ def ty(y):
 	return y + 36
 
 
+
 def draw_static_scene(display, temp_text=None):
 	display.fill(0)
-	draw_circle(display, center_x, center_y, 35, 1)
-	draw_circle(display, center_x, center_y, 32, 1)
-	draw_star(display, center_x, center_y, 13, 1)
+	# 縮小主視覺圓以避免與右側中文字接觸
+	draw_circle(display, center_x, center_y, 28, 1)
+	draw_circle(display, center_x, center_y, 25, 1)
+	draw_star(display, center_x, center_y, 10, 1)
 	draw_tiny_text(display, "Penghu University", 2, ty(2))
 	draw_tiny_text(display, "of Science and Technology", 2, ty(10))
 	draw_tiny_text(display, "Dept of CSIE", 2, ty(18))
