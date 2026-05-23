@@ -244,7 +244,7 @@ def draw_dancing_chinese(display, frame):
 	# 計算龍珠右邊界 (使用 draw_static_scene 的外圈半徑)
 	dragon_right = center_x + 28
 	margin = 4
-	spacing = 6
+	spacing = 10
 	wave = (-5, 0, 5, 0)
 	active = frame % len(chars)
 	# choose shrinks per-char (active=1, others=2)
@@ -259,10 +259,10 @@ def draw_dancing_chinese(display, frame):
 	star_top = center_y - 10
 	flower_small_y = star_top
 	flower_active_y = max(0, star_top - 2)
-	fire_small_y = min(oled_height - char_hs[1], flower_small_y + char_hs[0] - 4)
-	fire_active_y = flower_small_y + 2
-	jie_small_y = min(oled_height - char_hs[2], fire_small_y + char_hs[1] + 2)
-	jie_active_y = max(0, fire_small_y - 4)
+	fire_small_y = min(oled_height - char_hs[1], flower_small_y + char_hs[0] + 4)
+	fire_active_y = flower_small_y + 6
+	jie_small_y = min(oled_height - char_hs[2], fire_small_y + char_hs[1] + 6)
+	jie_active_y = max(0, fire_small_y - 2)
 
 	if active == 0:
 		ys = [flower_active_y, fire_small_y, jie_small_y]
@@ -280,7 +280,7 @@ def draw_dancing_chinese(display, frame):
 	# layout horizontally with extra margin when enlarged
 	prev_right = -1000
 	cur_x = base_x
-	extra_margin = 8
+	extra_margin = 12
 	prev_enlarged = False
 
 	for i, ch in enumerate(chars):
