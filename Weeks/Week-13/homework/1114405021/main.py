@@ -241,6 +241,9 @@ def draw_dancing_chinese(display, frame):
 	# 將中文群組往右移一些，並調整放大/非放大的縮放等級
 	# 放大時改為 shrink=2 (16px)，未放大時改為 shrink=3 (~11px)
 	base_x = 100
+	# 計算龍珠右邊界 (使用 draw_static_scene 的外圈半徑)
+	dragon_right = center_x + 28
+	margin = 4
 	spacing = 4
 	wave = (-5, 0, 5, 0)
 	active = frame % len(chars)
@@ -251,7 +254,14 @@ def draw_dancing_chinese(display, frame):
 		shrink = 2 if enlarged else 3
 		# 顯示尺寸由原始 32px / shrink 決定
 		size = (32 + shrink - 1) // shrink
-		x = base_x - 8 if enlarged else base_x
+		# 放大時預設往左移一點，但若會碰到龍珠則往右推到安全位置
+		if enlarged:
+			x = base_x - 8
+			min_x = int(dragon_right + margin)
+			if x < min_x:
+				x = min_x
+		else:
+			x = base_x
 		y = cy + wave[(frame + i) % len(wave)]
 
 		if enlarged:
