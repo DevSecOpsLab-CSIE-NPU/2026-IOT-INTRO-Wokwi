@@ -273,10 +273,19 @@ def draw_dancing_chinese(display, frame):
 			x = base_x
 		y = cy + wave[(frame + i) % len(wave)]
 
+		# compute char height and adjust for enlarge offset
+		char_h = (32 + shrink - 1) // shrink
 		if enlarged:
 			y -= 8
+		# clamp vertically so the character is fully visible (avoid wrap-around)
+		if y < 0:
+			y = 0
+		max_y = oled_height - char_h
+		if y > max_y:
+			y = max_y
 
-		draw_char(display, ch, x, y, shrink=shrink, wrap_y=True)
+		# draw without y-wrap to prevent split / half-visible glyphs
+		draw_char(display, ch, x, y, shrink=shrink, wrap_y=False)
 		cy += size + spacing
 
 
