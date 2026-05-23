@@ -283,6 +283,13 @@ def draw_dancing_chinese(display, frame):
 		y_mins = [flower_small_y, fire_small_y, jie_active_y]
 		y_maxs = [flower_small_y, fire_small_y, min(oled_height - char_hs[2], jie_active_y + 4)]
 
+	# shift the whole chinese group downward a bit
+	global_down_shift = 4
+	for i in range(3):
+		ys[i] += global_down_shift
+		y_mins[i] += global_down_shift
+		y_maxs[i] += global_down_shift
+
 	# layout horizontally with extra margin when enlarged
 	prev_right = -1000
 	cur_x = base_x
