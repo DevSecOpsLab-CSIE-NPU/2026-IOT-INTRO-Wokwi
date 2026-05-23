@@ -239,12 +239,12 @@ def draw_dancing_chinese(display, frame):
 	chars = "花火節"
 	base_y = 78
 	# 將中文群組往右移一些，並調整放大/非放大的縮放等級
-	# 放大時改為 shrink=2 (16px)，未放大時改為 shrink=3 (~11px)
-	base_x = 100
+	# 放大時使用原始 32px (shrink=1)，非放大時使用 shrink=2（16px）以保持清晰
+	base_x = 96
 	# 計算龍珠右邊界 (使用 draw_static_scene 的外圈半徑)
 	dragon_right = center_x + 28
 	margin = 4
-	spacing = 4
+	spacing = 6
 	wave = (-5, 0, 5, 0)
 	active = frame % len(chars)
 	cy = base_y
@@ -254,14 +254,14 @@ def draw_dancing_chinese(display, frame):
 
 	for i, ch in enumerate(chars):
 		enlarged = i == active
-		# 放大時使用原始 32px (shrink=1)，未放大時使用 shrink=3（較小）
-		shrink = 1 if enlarged else 3
+		# 放大時使用原始 32px (shrink=1)，未放大時使用 shrink=2（較大且更清晰）
+		shrink = 1 if enlarged else 2
 		# 顯示尺寸由原始 32px / shrink 決定
 		char_w = (32 + shrink - 1) // shrink
 		size = char_w
 		# 放大時預設往左移一點以靠近中間，非放大時維持 base_x
 		if enlarged:
-			x = base_x - 8
+			x = base_x - 12
 			min_x = int(dragon_right + margin)
 			if x < min_x:
 				x = min_x
