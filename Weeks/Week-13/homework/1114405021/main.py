@@ -254,29 +254,28 @@ def draw_dancing_chinese(display, frame):
 	char_ws = [ (32 + s - 1)//s for s in shrinks ]
 	char_hs = char_ws
 
-	# compute vertical positions so that active char gets center, others above/below
-	ys = [0,0,0]
-	if active == 0:
-		ys[0] = base_y
-		ys[1] = ys[0] + char_hs[0] + spacing
-		ys[2] = ys[1] + char_hs[1] + spacing
-	elif active == 1:
-		ys[1] = base_y
-		ys[0] = ys[1] - (char_hs[0] + spacing)
-		ys[2] = ys[1] + char_hs[1] + spacing
-	else:
-		ys[2] = base_y
-		ys[1] = ys[2] - (char_hs[1] + spacing)
-		ys[0] = ys[1] - (char_hs[0] + spacing)
+	# compute vertical anchors and clamps per character so each active state
+	# follows its own spacing rule.
+	star_top = center_y - 10
+	flower_small_y = star_top
+	flower_active_y = max(0, star_top - 2)
+	fire_small_y = min(oled_height - char_hs[1], flower_small_y + char_hs[0] - 4)
+	fire_active_y = flower_small_y + 2
+	jie_small_y = min(oled_height - char_hs[2], fire_small_y + char_hs[1] + 2)
+	jie_active_y = max(0, fire_small_y - 4)
 
-	# if '節' is enlarged (active == 2), ensure the top char ('花') is below
-	# the upper static tiny text. compute required shift dynamically.
-	if active == 2:
-		min_flower_y = ty(18) + 8
-		if ys[0] < min_flower_y:
-			shift_down = min_flower_y - ys[0]
-			for i in range(3):
-				ys[i] += shift_down
+	if active == 0:
+		ys = [flower_active_y, fire_small_y, jie_small_y]
+		y_mins = [flower_active_y, fire_small_y, jie_small_y]
+		y_maxs = [flower_active_y + 2, fire_small_y, jie_small_y]
+	elif active == 1:
+		ys = [flower_small_y, fire_active_y, jie_small_y]
+		y_mins = [flower_small_y, fire_active_y, jie_small_y]
+		y_maxs = [flower_small_y, fire_active_y + 2, jie_small_y]
+	else:
+		ys = [flower_small_y, fire_small_y, jie_active_y]
+		y_mins = [flower_small_y, fire_small_y, jie_active_y]
+		y_maxs = [flower_small_y, fire_small_y, min(oled_height - char_hs[2], jie_active_y + 4)]
 
 	# layout horizontally with extra margin when enlarged
 	prev_right = -1000
@@ -312,13 +311,12 @@ def draw_dancing_chinese(display, frame):
 
 		y = ys[i] + wave[(frame + i) % len(wave)]
 
-		# clamp vertical to keep glyph intact
+		# clamp vertical to keep glyph intact and respect per-char rules
 		char_h = char_hs[i]
-		# ensure enlarged chars (and small '花') do not go above the star top inside the dragon
-		star_top = center_y - 10
-		if enlarged or (ch == '花' and shrink > 1):
-			if y < star_top:
-				y = star_top
+		if y < y_mins[i]:
+			y = y_mins[i]
+		if y > y_maxs[i]:
+			y = y_maxs[i]
 		if y < 0:
 			y = 0
 		max_y = oled_height - char_h
