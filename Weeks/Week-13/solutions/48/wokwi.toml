@@ -1,0 +1,5 @@
+[wokwi]
+version = 1
+elf = "../../../../firmware/ESP32_GENERIC-20251209-v1.27.0.bin"
+firmware = "../../../../firmware/ESP32_GENERIC-20251209-v1.27.0.bin"
+rfc2217ServerPort = 4000
