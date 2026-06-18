@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": -19.2,
+      "left": -167.96,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    { "type": "wokwi-led", "id": "led1", "top": -13.2, "left": -25, "attrs": { "color": "red" } },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 90.35,
+      "left": -48,
+      "attrs": { "value": "200" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": -13.2,
+      "left": -53.8,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 138.35,
+      "left": -57.6,
+      "attrs": { "value": "200" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led3",
+      "top": -13.2,
+      "left": 13.4,
+      "attrs": { "color": "blue" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": 80.2,
+      "left": 8.75,
+      "rotate": 270,
+      "attrs": { "value": "200" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led4",
+      "top": -13.2,
+      "left": 42.2,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r4",
+      "top": 70.6,
+      "left": 37.55,
+      "rotate": 270,
+      "attrs": { "value": "200" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 100,
+      "left": 100,
+      "attrs": { "color": "green" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:5", "r1:1", "red", [ "h0" ] ],
+    [ "r1:2", "led1:A", "red", [ "v0" ] ],
+    [ "led1:C", "esp:GND.3", "black", [ "v0" ] ],
+    [ "esp:2", "r2:1", "green", [ "h0" ] ],
+    [ "r2:2", "led2:A", "green", [ "h18", "v-96", "h-57.6" ] ],
+    [ "led2:C", "esp:GND.3", "black", [ "v0" ] ],
+    [ "esp:15", "r3:1", "blue", [ "h125.1" ] ],
+    [ "r3:2", "led3:A", "blue", [ "h0" ] ],
+    [ "led3:C", "esp:GND.3", "black", [ "v0" ] ],
+    [ "r4:2", "led4:A", "gold", [ "h0" ] ],
+    [ "esp:4", "r4:1", "gold", [ "h0" ] ],
+    [ "led4:C", "esp:GND.3", "black", [ "v0" ] ],
+    [ "esp:18", "btn1:1.l", "purple", [ "h0" ] ],
+    [ "btn1:2.l", "esp:GND.1", "black", [ "h0" ] ]
+  ],
+  "dependencies": {}
+}
