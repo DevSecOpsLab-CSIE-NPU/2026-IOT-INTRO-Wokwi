@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 9.6,
+      "left": -100.76,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    {
+      "type": "board-grove-oled-sh1107",
+      "id": "oled1",
+      "top": 58.8,
+      "left": 27.07,
+      "rotate": 270,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:GND.2", "oled1:GND.1", "black", [ "v-28.8", "h96" ] ],
+    [ "esp:3V3", "oled1:VCC", "red", [ "v-38.4", "h201.75" ] ],
+    [ "esp:22", "oled1:SDA", "green", [ "h19.2", "v-67.2", "h96" ] ],
+    [ "esp:21", "oled1:SCL.1", "blue", [ "h28.8", "v-57.6", "h105.6" ] ]
+  ],
+  "dependencies": {}
+}
