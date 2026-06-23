@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 163.2, "left": 196.84, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -38.1, "left": 349.8, "attrs": {} },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": -144,
+      "left": 163.2,
+      "attrs": { "text": "我的學號 : 1114405003" }
+    },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 108.3, "left": 458.2, "attrs": {} },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": 175.94,
+      "left": 29.03,
+      "attrs": { "i2cAddress": "0x3c" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "v96", "h-182.4" ] ],
+    [ "dht1:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "esp:19", "dht1:SDA", "magenta", [ "h76.8" ] ],
+    [ "gas1:VCC", "esp:5V", "red", [ "h19.2", "v239.1", "h-412.95" ] ],
+    [ "esp:34", "gas1:AOUT", "purple", [ "h-19.05", "v182.4", "h451.2", "v-288" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "h9.6", "v18.4" ] ],
+    [ "oled1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "oled1:GND", "esp:GND.2", "black", [ "v-67.2", "h-96" ] ],
+    [ "esp:22", "oled1:SCL", "orange", [ "h38.4", "v-105.6", "h-249.9" ] ],
+    [ "oled1:SDA", "esp:21", "green", [ "v-48", "h220.87", "v105.6" ] ]
+  ],
+  "dependencies": {}
+}

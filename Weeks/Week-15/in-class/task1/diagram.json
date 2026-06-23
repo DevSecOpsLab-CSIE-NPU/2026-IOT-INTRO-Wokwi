@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 163.2, "left": 196.84, "attrs": {} },
+    { "type": "wokwi-ili9341", "id": "lcd1", "top": -210.4, "left": -67.5, "attrs": {} },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": -144,
+      "left": 163.2,
+      "attrs": { "text": "我的學號 : 1114405003" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "lcd1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "lcd1:GND", "esp:GND.2", "black", [ "v86.4", "h297.6" ] ],
+    [ "lcd1:CS", "esp:5", "orange", [ "v76.8", "h316.8", "v134.4" ] ],
+    [ "lcd1:D/C", "esp:17", "gold", [ "v57.6", "h307.2", "v163.2" ] ],
+    [ "lcd1:MOSI", "esp:23", "green", [ "v48", "h307.19", "v86.4" ] ],
+    [ "lcd1:SCK", "esp:18", "blue", [ "v38.4", "h307.19", "v153.6" ] ]
+  ],
+  "dependencies": {}
+}
