@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 182.4,
+      "left": 81.64,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    { "type": "wokwi-ili9341", "id": "lcd1", "top": -172, "left": -182.7, "attrs": {} },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": -131.7, "left": 189.4, "attrs": {} },
+    {
+      "type": "board-ssd1306",
+      "id": "oled2",
+      "top": 406.34,
+      "left": 288.23,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -162.9, "left": 61.8, "attrs": {} },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": -201.6,
+      "left": 326.4,
+      "attrs": { "text": "學號:1114405021\n" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "lcd1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "lcd1:GND", "esp:GND.2", "black", [ "v57.6", "h345.6", "v38.4" ] ],
+    [ "lcd1:CS", "esp:5", "green", [ "v38.4", "h374.4", "v144" ] ],
+    [ "lcd1:D/C", "esp:17", "gold", [ "v28.8", "h374.4", "v172.8" ] ],
+    [ "lcd1:MOSI", "esp:23", "magenta", [ "v19.2", "h326.39", "v86.4" ] ],
+    [ "lcd1:SCK", "esp:18", "blue", [ "v9.6", "h287.99", "v163.2" ] ],
+    [ "oled2:SCL", "esp:22", "orange", [ "v0" ] ],
+    [ "oled2:SDA", "esp:21", "limegreen", [ "v0" ] ],
+    [ "oled2:GND", "esp:GND.2", "black", [ "v-230.4", "h-105.6", "v28.8" ] ],
+    [ "oled2:VCC", "esp:3V3", "red", [ "v-316.8", "h-307.05", "v115.2" ] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "v144", "h-48", "v115.2" ] ],
+    [ "dht1:SDA", "esp:13", "green", [ "v240", "h-38.3", "v153.6" ] ],
+    [ "dht1:GND", "esp:GND.2", "black", [ "v220.8", "h115.2", "v38.4" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "h28.8", "v66.4", "h-134.4", "v240" ] ],
+    [ "gas1:VCC", "esp:5V", "violet", [ "h19.2", "v152.7", "h-326.4", "v297.6" ] ],
+    [ "esp:VP", "gas1:AOUT", "green", [ "h-86.25", "v-249.6", "h374.4", "v-105.6" ] ]
+  ],
+  "dependencies": {}
+}
