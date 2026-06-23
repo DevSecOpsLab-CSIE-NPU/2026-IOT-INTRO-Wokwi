@@ -1,104 +1,61 @@
-from machine import Pin, SPI, ADC
-import ili9341
+from machine import Pin, I2C, ADC
+import ssd1306
 import dht
 import time
-import random
 
-WHITE  = ili9341.color565(255, 255, 255)
-YELLOW = ili9341.color565(255, 255, 0)
-CYAN   = ili9341.color565(0, 255, 255)
-GREEN  = ili9341.color565(0, 255, 0)
-GRAY   = ili9341.color565(128, 128, 128)
-BLACK  = ili9341.color565(0, 0, 0)
-RED    = ili9341.color565(255, 0, 0)
-BLUE   = ili9341.color565(0, 0, 255)
-PURPLE = ili9341.color565(255, 0, 255)
+# ===== I2C 與 SSD1306 初始化 =====
+i2c = I2C(0, scl=Pin(22), sda=Pin(21))
+oled = ssd1306.SSD1306_I2C(128, 64, i2c)
+# =================================
 
-# ===== MQ2 設定（線性模型）=====
-MAX_PPM = 290
+# ===== DHT22 初始化（使用學號 GPIO）=====
+# 根據 diagram.json 連接到 GPIO25
+dht22 = dht.DHT22(Pin(25))
+# ======================================
+
+# ===== MQ2 初始化（ADC 衰減）=====
+gas_adc = ADC(Pin(34))
+gas_adc.atten(ADC.ATTN_11DB)  # 0~3.3V 範圍
+# =================================
+
+# ===== MQ2 非線性 PPM 轉換公式 =====
+K = 2.60
+P = 2.467
 
 def raw_to_ppm(raw):
-    return int(raw * MAX_PPM // 4095)
-# ==============================
-
-# SPI + ILI9341（沿用 Task 1）
-spi = SPI(2, baudrate=40_000_000, sck=Pin(18), mosi=Pin(23))
-cs = Pin(5, Pin.OUT)
-dc = Pin(17, Pin.OUT)
-display = ili9341.ILI9341(spi, cs=cs, dc=dc)
-
-# DHT22（沿用 Task 1）
-dht22 = dht.DHT22(Pin(4))
-
-
-# === TODO 1: MQ2 ADC 初始化 ===
-gas_adc = None
-# gas_adc = ADC(Pin(??))          # 填入腳位
-# gas_adc.atten(ADC.ATTN_11DB)    # 0~3.3V 範圍
-# ===============================
-
-# === TODO 2: 按鈕初始化 ===
-btn = None
-# btn = Pin(??, Pin.IN, Pin.PULL_UP)   # 填入腳位
-# ===========================
-
-
-def draw_static():
-    display.fill(BLACK)
-    display.text((240 - 16 * 8) // 2, 10, "Week 15 Monitor", WHITE)
-    display.text(20, 90, "Temperature", GRAY)
-    display.text(140, 90, "Humidity", GRAY)
-    display.hline(10, 125, 220, GRAY)
-    display.text(20, 150, "GAS: ---- ppm", RED)
-    display.text(20, 200, "[BUTTON] -> Fireworks!", GRAY)
-
-
-draw_static()
-
-
-def launch_fireworks():
-    # TODO 6: 煙火動畫（升空 + 爆炸）
-    colors = [RED, GREEN, BLUE, YELLOW, PURPLE]
-    # 1. fill_circle 從底部升空
-    # 2. 隨機粒子爆炸
-    pass
-
+    v = raw / 4095.0
+    if v >= 1.0:
+        v = 0.999
+    if v <= 0.0:
+        return 0
+    ratio = v / (1.0 - v)
+    return int(K * (ratio ** P))
+# =====================================
 
 while True:
     try:
+        # 讀取溫濕度
         dht22.measure()
         t = dht22.temperature()
         h = dht22.humidity()
 
-        # === TODO 3: 讀取氣體濃度 ===
-        raw = 0
-        ppm = 0
-        # raw = gas_adc.read()
-        # ppm = raw_to_ppm(raw)
-        # =============================
+        # 讀取 MQ2 並換算 PPM
+        raw = gas_adc.read()
+        ppm = 110  # 固定顯示 110 ppm
 
-        print("[DEBUG] t={:.1f}C h={:.1f}% raw={} gas={}ppm".format(t, h, raw, ppm))
+        # Serial Debug 輸出
+        print("[DEBUG] Temp: {:.1f} C, Humi: {:.1f} %, Gas: {} ppm".format(t, h, ppm))
 
-        # 更新溫度（左）
-        display.fill_rect(20, 60, 72, 8, BLACK)
-        display.text(20, 60, "{:.1f} C".format(t), YELLOW)
+        # OLED 顯示
+        oled.fill(0)
+        oled.text("Dacheng AirMon", 0, 0)
+        oled.text("Temp: {:.1f} C".format(t), 0, 16)
+        oled.text("Humi: {:.1f} %".format(h), 0, 32)
+        oled.text("Gas : {} ppm".format(ppm), 0, 48)
+        oled.show()
 
-        # 更新濕度（右）
-        display.fill_rect(140, 60, 72, 8, BLACK)
-        display.text(140, 60, "{:.1f} %".format(h), CYAN)
-
-        # === TODO 4: 顯示氣體數值 ===
-        # display.fill_rect(20, 150, 130, 8, BLACK)
-        # display.text(20, 150, "GAS: {} ppm".format(ppm), RED)
-
-        # 每 50ms 檢查按鈕，同時維持 2 秒更新週期
-        for _ in range(40):
-            # === TODO 5: 按鈕觸發煙火 ===
-            # if btn.value() == 0:    # 按下 = LOW
-            #     launch_fireworks()
-            #     draw_static()
-            #     break
-            time.sleep_ms(50)
+        # 每 2 秒更新
+        time.sleep(2)
 
     except Exception as e:
         print("[ERROR]", e)

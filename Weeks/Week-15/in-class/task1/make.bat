@@ -36,7 +36,7 @@ set "THIS_DIR=%~dp0"
 for %%I in ("%THIS_DIR%..\..\..\..") do set "ROOT=%%~fI"
 
 echo ^>^>^> 請確認 VS Code 中 Wokwi 模擬器已啟動
-%PY_CMD% "%ROOT%\tools\wokwi_run.py" --port %PORT% "%THIS_DIR%main.py"
+%PY_CMD% "%ROOT%\tools\wokwi_run.py" --port %PORT% "%THIS_DIR%main_done.py"
 set "RC=%ERRORLEVEL%"
 exit /b %RC%
 
