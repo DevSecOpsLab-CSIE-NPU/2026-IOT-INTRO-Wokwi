@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "author": "OpenAI Codex",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": { "env": "micropython-20231005-v1.21.0" } },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 150, "left": -260, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "gas1:VCC", "esp:5V", "red", [ "h-55", "v70", "h340" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "h-70", "v35", "h355" ] ],
+    [ "gas1:AOUT", "esp:34", "purple", [ "h-85", "v-160", "h300" ] ]
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "OpenAI Codex",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": { "env": "micropython-20231005-v1.21.0" } },
+    { "type": "board-ssd1306", "id": "oled1", "top": 120, "left": 360, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -190, "left": -270, "attrs": {} },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 210, "left": -285, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "oled1:VCC", "esp:3V3", "red", [ "h-45", "v-185", "h-250" ] ],
+    [ "oled1:GND", "esp:GND.2", "black", [ "h-60", "v-170", "h-235" ] ],
+    [ "oled1:SCL", "esp:22", "green", [ "h-75", "v-55", "h-210" ] ],
+    [ "oled1:SDA", "esp:21", "blue", [ "h-90", "v-40", "h-195" ] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "h-45", "v-55", "h330" ] ],
+    [ "dht1:GND", "esp:GND.2", "black", [ "h-60", "v-25", "h345" ] ],
+    [ "dht1:SDA", "esp:33", "violet", [ "h-75", "v75", "h300" ] ],
+    [ "gas1:VCC", "esp:5V", "red", [ "h-55", "v70", "h340" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "h-70", "v35", "h355" ] ],
+    [ "gas1:AOUT", "esp:34", "purple", [ "h-85", "v-160", "h300" ] ]
+  ],
+  "dependencies": {}
+}

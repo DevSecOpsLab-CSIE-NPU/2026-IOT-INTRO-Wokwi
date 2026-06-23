@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "author": "OpenAI Codex",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": { "env": "micropython-20231005-v1.21.0" } },
+    { "type": "wokwi-ili9341", "id": "lcd1", "top": -350, "left": -230, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "lcd1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "lcd1:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "lcd1:CS", "esp:5", "gold", [ "v0" ] ],
+    [ "lcd1:D/C", "esp:17", "orange", [ "v0" ] ],
+    [ "lcd1:MOSI", "esp:23", "blue", [ "v0" ] ],
+    [ "lcd1:SCK", "esp:18", "green", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
