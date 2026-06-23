@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": -28.8,
+      "left": 52.84,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-ili9341",
+      "id": "lcd1",
+      "top": -104.8,
+      "left": -173.1,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []],
+    ["esp:3V3", "lcd1:VCC", "red", ["h-9.45", "v201.6", "h-172.8"]],
+    ["esp:GND.2", "lcd1:GND", "black", ["h48", "v192", "h-316.8"]],
+    ["lcd1:CS", "esp:5", "orange", ["v28.8", "h278.4", "v-124.8"]],
+    ["lcd1:D/C", "esp:17", "blue", ["v38.4", "h249.6", "v-124.8"]],
+    ["lcd1:MOSI", "esp:23", "violet", ["v48", "h268.79", "v-220.8"]],
+    ["lcd1:SCK", "esp:18", "green", ["v57.6", "h249.59", "v-163.2"]]
+  ],
+  "dependencies": {}
+}
