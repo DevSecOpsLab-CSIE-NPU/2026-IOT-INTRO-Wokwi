@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "author": "Dacheng Air Quality Monitor",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 120,
+      "left": -180,
+      "attrs": {
+        "fastTLS": "1"
+      }
+    },
+    {
+      "type": "wokwi-ili9341",
+      "id": "lcd1",
+      "top": 20,
+      "left": 120,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+
+    [ "esp:3V3", "lcd1:VCC", "red", [ "h20", "v-80", "h260", "v40" ] ],
+    [ "esp:GND.2", "lcd1:GND", "black", [ "h40", "v-60", "h220", "v40" ] ],
+
+    [ "esp:3V3", "lcd1:RST", "purple", [ "h60", "v-100", "h240", "v80" ] ],
+
+    [ "esp:5", "lcd1:CS", "green", [ "h80", "v120", "h210" ] ],
+    [ "esp:17", "lcd1:D/C", "blue", [ "h100", "v100", "h190" ] ],
+    [ "esp:18", "lcd1:SCK", "gray", [ "h120", "v80", "h170" ] ],
+    [ "esp:23", "lcd1:MOSI", "orange", [ "h140", "v60", "h150" ] ]
+  ],
+  "dependencies": {}
+}
