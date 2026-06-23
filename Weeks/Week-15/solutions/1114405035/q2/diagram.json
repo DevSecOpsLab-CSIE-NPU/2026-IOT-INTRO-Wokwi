@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 48,
+      "left": 14.44,
+      "attrs": {}
+    },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": 60.74,
+      "left": 163.43,
+      "attrs": {
+        "i2cAddress": "0x3c"
+      }
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": -124.5,
+      "left": 273,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-gas-sensor",
+      "id": "gas1",
+      "top": 204.3,
+      "left": -185,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "gas1:VCC",
+      "esp:5V",
+      "red",
+      [
+        "v-0.9",
+        "h67.05"
+      ]
+    ],
+    [
+      "esp:GND.1",
+      "gas1:GND",
+      "black",
+      [
+        "h-19.05",
+        "v19.2"
+      ]
+    ],
+    [
+      "oled1:GND",
+      "esp:GND.2",
+      "black",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "oled1:VCC",
+      "esp:3V3",
+      "red",
+      [
+        "v-67.2",
+        "h-201.45"
+      ]
+    ],
+    [
+      "oled1:SCL",
+      "esp:22",
+      "orange",
+      [
+        "v-28.8",
+        "h-66.9",
+        "v48"
+      ]
+    ],
+    [
+      "oled1:SDA",
+      "esp:21",
+      "#8f4814",
+      [
+        "v-38.4",
+        "h-86.33",
+        "v86.4"
+      ]
+    ],
+    [
+      "dht1:VCC",
+      "esp:3V3",
+      "red",
+      [
+        "v9.6",
+        "h-259.2"
+      ]
+    ],
+    [
+      "dht1:GND",
+      "esp:GND.2",
+      "black",
+      [
+        "v19.2",
+        "h-201.6"
+      ]
+    ],
+    [
+      "dht1:SDA",
+      "esp:23",
+      "gold",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "gas1:AOUT",
+      "esp:34",
+      "green",
+      [
+        "h38.4",
+        "v-96"
+      ]
+    ]
+  ],
+  "dependencies": {}
+}

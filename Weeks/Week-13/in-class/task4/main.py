@@ -15,8 +15,8 @@ center_y = 64
 dragon_center_x = center_x - 32
 dragon_center_y = center_y
 
-# DHT22 data pin (match diagram.json wiring)
-dht_sensor = dht.DHT22(Pin(23))
+# DHT22 data pin (match diagram.json wiring: esp:19)
+dht_sensor = dht.DHT22(Pin(19))
 
 
 def draw_circle(display, cx, cy, r, color=1):
