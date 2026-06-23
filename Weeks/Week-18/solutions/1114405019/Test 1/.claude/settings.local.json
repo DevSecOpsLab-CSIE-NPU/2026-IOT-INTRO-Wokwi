@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wokwi-cli --version)",
+      "Bash(npx --yes wokwi-cli --version)",
+      "Bash(python -c ' *)",
+      "Bash(cd \"/c/Users/yiteng/Downloads/wokwi final test/2026-IOT-INTRO-Wokwi/Weeks/Week-18/solutions/1114405019/Test 1\" && grep -n \"def \\\\|color565\" ili9341.py)",
+      "Read(//c/c/Users/yiteng/Downloads/wokwi final test/2026-IOT-INTRO-Wokwi/Weeks/Week-18/solutions/1114405019/Test 1/**)",
+      "Bash(xxd make.bat)"
+    ]
+  }
+}
