@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "author": "bryan",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-gas-sensor",
+      "id": "gas1",
+      "top": -120,
+      "left": 150,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": -170,
+      "left": -110,
+      "attrs": {
+        "text": "Q3 MQ2 -> ThingsBoard MQTT"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "gas1:VCC",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "gas1:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "gas1:AOUT",
+      "esp:34",
+      "purple",
+      []
+    ]
+  ],
+  "dependencies": {}
+}

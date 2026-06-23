@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "author": "bryan",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": -170,
+      "left": -170,
+      "attrs": {
+        "i2cAddress": "0x3c"
+      }
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": -150,
+      "left": 110,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-gas-sensor",
+      "id": "gas1",
+      "top": 150,
+      "left": 100,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": -210,
+      "left": -170,
+      "attrs": {
+        "text": "Q2 OLED + DHT22 + MQ2"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "oled1:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "oled1:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "oled1:SCL",
+      "esp:22",
+      "green",
+      []
+    ],
+    [
+      "oled1:SDA",
+      "esp:21",
+      "blue",
+      []
+    ],
+    [
+      "dht1:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "dht1:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "dht1:SDA",
+      "esp:19",
+      "violet",
+      []
+    ],
+    [
+      "gas1:VCC",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "gas1:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "gas1:AOUT",
+      "esp:34",
+      "purple",
+      []
+    ]
+  ],
+  "dependencies": {}
+}
