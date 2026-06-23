@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 9.6,
+      "left": -139.16,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 108.3, "left": 26.2, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "gas1:VCC", "esp:5V", "red", [ "h9.6", "v75.9", "h-307.35" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "h19.2", "v-39.2", "h-144", "v-172.8" ] ],
+    [ "gas1:AOUT", "esp:26", "green", [ "h9.6", "v-124.8", "h-316.8", "v124.8" ] ]
+  ],
+  "dependencies": {}
+}
