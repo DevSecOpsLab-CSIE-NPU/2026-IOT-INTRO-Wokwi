@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 9.6,
+      "left": -129.56,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    { "type": "wokwi-ili9341", "id": "lcd1", "top": -47.2, "left": 47.7, "attrs": {} },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": -131.26,
+      "left": -143.77,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -162.9, "left": -264.6, "attrs": {} },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 89.1, "left": -444.2, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "lcd1:VCC", "esp:3V3", "red", [ "v28.8", "h-249.6", "v-230.4" ] ],
+    [ "lcd1:GND", "esp:GND.2", "black", [ "v9.6", "h-86.4", "v-211.2" ] ],
+    [ "lcd1:CS", "esp:5", "orange", [ "v38.4", "h-76.8", "v-153.6" ] ],
+    [ "lcd1:D/C", "esp:17", "gold", [ "v48", "h-124.8", "v-153.6" ] ],
+    [ "lcd1:MOSI", "esp:23", "blue", [ "v57.6", "h-115.21", "v-249.6" ] ],
+    [ "lcd1:SCK", "esp:18", "green", [ "v67.2", "h-163.21", "v-192" ] ],
+    [ "oled1:VCC", "esp:3V3", "red", [ "v-28.8", "h-57.45", "v192" ] ],
+    [ "oled1:GND", "esp:GND.2", "black", [ "v-48", "h9.6" ] ],
+    [ "esp:22", "oled1:SCL", "violet", [ "h28.8", "v-211.2", "h-86.4" ] ],
+    [ "esp:21", "oled1:SDA", "gray", [ "h38.4", "v-249.6", "h-86.4" ] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "dht1:GND", "esp:GND.2", "black", [ "v38.4", "h192" ] ],
+    [ "esp:13", "dht1:SDA", "white", [ "h-115.05", "v-220.8" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "h38.4", "v-135.2", "h240" ] ],
+    [ "esp:5V", "gas1:VCC", "red", [ "h0" ] ],
+    [ "gas1:AOUT", "esp:35", "purple", [ "v-9.6", "h182.25" ] ]
+  ],
+  "dependencies": {}
+}
