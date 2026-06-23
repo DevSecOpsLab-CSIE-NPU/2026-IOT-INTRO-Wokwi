@@ -1,0 +1,20 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4200
+load:0x40078000,len:15236
+load:0x40080400,len:3332
+entry 0x400805a8
+[DEBUG] T=24.0C H=40.0%) Raw=58062 V=2.92 PPM=228
+[DEBUG] T=24.0C H=40.0%) Raw=58062 V=2.92 PPM=228
+[DEBUG] T=24.0C H=40.0%) Raw=58062 V=2.92 PPM=228
+... (repeated)
+Traceback (most recent call last):
+  File "main.py", line 90, in <module>
+  File "main.py", line 86, in main
+KeyboardInterrupt: 
+MicroPython v1.28.0 on 2026-04-06; Generic ESP32 module with ESP32
+Type "help()" for more information.
