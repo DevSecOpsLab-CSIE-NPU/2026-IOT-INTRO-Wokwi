@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "author": "1114405040",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 20,
+      "left": -30,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    {
+      "type": "wokwi-gas-sensor",
+      "id": "gas1",
+      "top": -145,
+      "left": 105,
+      "attrs": { "ppm": "50" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "label1",
+      "top": -190,
+      "left": -70,
+      "attrs": { "text": "1114405040 Q3 MQTT" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "gas1:VCC", "esp:3V3", "red", [ "v-28.8", "h-96" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "v57.6", "h-124.8" ] ],
+    [ "gas1:AOUT", "esp:32", "purple", [ "v76.8", "h-86.4" ] ]
+  ],
+  "dependencies": {}
+}
