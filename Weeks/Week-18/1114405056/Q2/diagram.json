@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "copilot",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 10, "left": -40, "attrs": {} },
+    { "type": "board-ssd1306", "id": "oled1", "top": -200, "left": 80, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -120, "left": 20, "attrs": {} },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": -60, "left": 140, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [ "v-14.4", "h-112.8" ] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [ "v-14.4", "h-84" ] ],
+    [ "oled1:GND", "esp:GND.2", "black", [ "v48", "h124.65" ] ],
+    [ "oled1:VCC", "esp:3V3", "red", [ "v48", "h124.65" ] ],
+    [ "esp:22", "oled1:SCL", "green", [ "h9.6", "v134.4", "h-172.79" ] ],
+    [ "esp:21", "oled1:SDA", "blue", [ "h19.2", "v211.2", "h-191.99" ] ],
+    [ "dht1:GND", "esp:GND.2", "black", [ "v86.4", "h-48" ] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "v-76.8", "h115.35" ] ],
+    [ "esp:25", "dht1:SDA", "violet", [ "h76.8", "v-211.2", "h-48.1" ] ],
+    [ "gas1:VCC", "esp:5V", "red", [ "h-19.05", "v19.2", "h307.2" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "h9.6", "v133.6", "h-201.6" ] ],
+    [ "esp:14", "gas1:AOUT", "purple", [ "h-28.65", "v211.2", "h336", "v-460.8" ] ]
+  ],
+  "dependencies": {}
+}

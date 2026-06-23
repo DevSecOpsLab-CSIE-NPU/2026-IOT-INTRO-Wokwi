@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "author": "copilot",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 9.6, "left": -43.16, "attrs": {} },
+    { "type": "wokwi-ili9341", "id": "lcd1", "top": -200, "left": 80, "attrs": {} },
+    { "type": "wokwi-text", "id": "text1", "top": -250, "left": 0, "attrs": { "text": "Q1 - ILI9341 Title" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "lcd1:GND", "esp:GND.2", "black", [] ],
+    [ "lcd1:VCC", "esp:3V3", "red", [] ],
+    [ "esp:5", "lcd1:CS", "gold", [] ],
+    [ "esp:17", "lcd1:D/C", "orange", [] ],
+    [ "esp:23", "lcd1:MOSI", "blue", [] ],
+    [ "esp:18", "lcd1:SCK", "green", [] ]
+  ],
+  "dependencies": {}
+}
