@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 67.2,
+      "left": -71.96,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": -54.46,
+      "left": -230.17,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 156.3, "left": 131.8, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -76.5, "left": 109.8, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:22", "oled1:SCL", "limegreen", [ "h28.8", "v-182.4", "h-230.4" ] ],
+    [ "esp:21", "oled1:SDA", "cyan", [ "h19.2", "v-201.6", "h-211.2" ] ],
+    [ "oled1:GND", "esp:GND.1", "black", [ "v-28.8", "h-48", "v201.6" ] ],
+    [ "oled1:VCC", "esp:3V3", "red", [ "v-9.6", "h-67.05", "v172.8" ] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "v9.6", "h-201.6" ] ],
+    [ "dht1:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "dht1:SDA", "esp:13", "yellow", [ "v259.2", "h-239.9", "v-38.4" ] ],
+    [ "gas1:VCC", "esp:5V", "red", [ "h28.8", "v133.5", "h-412.8" ] ],
+    [ "gas1:GND", "esp:GND.2", "black", [ "h9.6", "v-96.8" ] ],
+    [ "gas1:AOUT", "esp:32", "magenta", [ "h38.4", "v182.4", "h-393.6", "v-220.8" ] ]
+  ],
+  "dependencies": {}
+}

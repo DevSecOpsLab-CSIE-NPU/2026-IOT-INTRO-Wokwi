@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 9.6,
+      "left": -100.76,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    { "type": "wokwi-ili9341", "id": "lcd1", "top": -402.4, "left": -365.1, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "lcd1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "lcd1:GND", "esp:GND.2", "black", [ "v115.2", "h326.4" ] ],
+    [ "lcd1:CS", "esp:5", "violet", [ "v105.6", "h316.8", "v124.8" ] ],
+    [ "esp:17", "lcd1:D/C", "white", [ "h48", "v-172.8", "h-19.2" ] ],
+    [ "lcd1:MOSI", "esp:23", "purple", [ "v96", "h307.19", "v76.8" ] ],
+    [ "esp:18", "lcd1:SCK", "magenta", [ "h67.2", "v-172.8", "h-28.8" ] ]
+  ],
+  "dependencies": {}
+}
